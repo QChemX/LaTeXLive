@@ -1,5 +1,7 @@
 > 从 LateX公式编辑器-妈叔出品 修改而来，离线本地打开index.html即可使用
 
+https://ubnm.github.io/LaTeXLive/
+
 
 
 使用文档 Documentation
