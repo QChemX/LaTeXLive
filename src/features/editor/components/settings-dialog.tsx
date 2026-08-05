@@ -1,11 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, Columns2, Monitor, Moon, Rows3, Sun } from "lucide-react";
+import { Check, Columns2, Monitor, Moon, RotateCcw, Rows3, Sun } from "lucide-react";
+import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { useEditorUiStore, type PaneLayout, type ThemePreference } from "@/stores/editor-ui-store";
+import {
+  getDefaultEditorPreferences,
+  useEditorUiStore,
+  type PaneLayout,
+  type ThemePreference,
+} from "@/stores/editor-ui-store";
 import { useI18n, type MessageKey } from "@/lib/i18n";
 
 const settingsSchema = z.object({
@@ -40,6 +46,7 @@ export function SettingsDialog() {
   const setLayout = useEditorUiStore((state) => state.setLayout);
   const setAlignment = useEditorUiStore((state) => state.setAlignment);
   const setPreviewScale = useEditorUiStore((state) => state.setPreviewScale);
+  const restoreDefaultPreferences = useEditorUiStore((state) => state.restoreDefaultPreferences);
 
   const { register, handleSubmit, control, reset } = useForm<SettingsValues>({
     resolver: zodResolver(settingsSchema),
@@ -54,6 +61,16 @@ export function SettingsDialog() {
   const selectedTheme = useWatch({ control, name: "theme" });
   const selectedLayout = useWatch({ control, name: "layout" });
 
+  useEffect(() => {
+    if (!open) return;
+    reset({
+      theme: currentTheme,
+      layout: currentLayout,
+      alignment: currentAlignment,
+      previewScale: currentScale,
+    });
+  }, [currentAlignment, currentLayout, currentScale, currentTheme, open, reset]);
+
   const submit = (values: SettingsValues) => {
     setTheme(values.theme);
     setLayout(values.layout);
@@ -63,15 +80,18 @@ export function SettingsDialog() {
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (nextOpen) {
-      reset({
-        theme: currentTheme,
-        layout: currentLayout,
-        alignment: currentAlignment,
-        previewScale: currentScale,
-      });
-    }
     setOpen(nextOpen);
+  };
+
+  const handleRestoreDefaults = () => {
+    const defaults = getDefaultEditorPreferences();
+    restoreDefaultPreferences();
+    reset({
+      theme: defaults.theme,
+      layout: defaults.layout,
+      alignment: defaults.alignment,
+      previewScale: defaults.previewScale,
+    });
   };
 
   return (
@@ -148,9 +168,15 @@ export function SettingsDialog() {
             </label>
           </div>
 
-          <div className="flex justify-end gap-2 border-t border-border pt-5">
-            <Button variant="ghost" onClick={() => setOpen(false)}>{t("cancel")}</Button>
-            <Button type="submit">{t("save")}</Button>
+          <div className="flex flex-col gap-3 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <Button variant="outline" onClick={handleRestoreDefaults} className="sm:self-start">
+              <RotateCcw />
+              {t("restoreDefaults")}
+            </Button>
+            <div className="flex justify-end gap-2">
+              <Button variant="ghost" onClick={() => setOpen(false)}>{t("cancel")}</Button>
+              <Button type="submit">{t("save")}</Button>
+            </div>
           </div>
         </form>
       </DialogContent>

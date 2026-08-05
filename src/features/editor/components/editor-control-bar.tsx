@@ -50,7 +50,7 @@ export function EditorControlBar({ controls, onInsert, onEnvironment, onClear, c
             <DropdownMenu key={tag}>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" aria-label={labels[tag]} className="shrink-0 text-muted-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground">
-                  <Icon /> <span className="hidden min-[1400px]:inline">{labels[tag]}</span><ChevronDown className="size-3" />
+                  <Icon /> <span className="editor-control-label">{labels[tag]}</span><ChevronDown className="size-3" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-72 p-2.5">
@@ -79,7 +79,7 @@ export function EditorControlBar({ controls, onInsert, onEnvironment, onClear, c
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" aria-label={t("environment")} className="shrink-0 text-muted-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground">
-            <Braces /> <span className="hidden min-[1400px]:inline">{t("environment")}</span><ChevronDown className="size-3" />
+            <Braces /> <span className="editor-control-label">{t("environment")}</span><ChevronDown className="size-3" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-48">
@@ -95,7 +95,7 @@ export function EditorControlBar({ controls, onInsert, onEnvironment, onClear, c
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="sm" aria-label={t("clear")} className="shrink-0 text-muted-foreground hover:text-destructive" onClick={onClear} disabled={clearDisabled}>
-            <Eraser /><span className="hidden min-[1400px]:inline">{t("clear")}</span>
+            <Eraser /><span className="editor-control-label">{t("clear")}</span>
           </Button>
         </TooltipTrigger>
         <TooltipContent>{t("clear")}</TooltipContent>
