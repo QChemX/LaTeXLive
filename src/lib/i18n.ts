@@ -76,6 +76,7 @@ const zhCN = {
   center: "居中",
   right: "右对齐",
   previewScale: "预览缩放",
+  restoreDefaults: "恢复默认设置",
   cancel: "取消",
   close: "关闭",
   save: "保存设置",
@@ -104,7 +105,7 @@ const zhTW: Record<MessageKey, string> = {
   ocrFailed: "圖片識別失敗，請稍後再試。", operationFailed: "操作失敗，請再試一次。", formulaRequired: "請先輸入有效公式。", editorPreferences: "編輯器偏好",
   preferenceHint: "這些設定只保存在目前裝置，不會改變公式原始碼。", appearance: "外觀主題", light: "淺色", dark: "深色", system: "跟隨系統",
   workspaceLayout: "工作區版面", split: "左右分欄", stacked: "上下排列", formulaAlignment: "公式對齊", left: "靠左", center: "置中",
-  right: "靠右", previewScale: "預覽縮放", cancel: "取消", close: "關閉", save: "儲存設定", footer: "LaTeX Live · 基於 MathJax 的現代公式工作台",
+  right: "靠右", previewScale: "預覽縮放", restoreDefaults: "恢復預設設定", cancel: "取消", close: "關閉", save: "儲存設定", footer: "LaTeX Live · 基於 MathJax 的現代公式工作台",
 };
 
 const en: Record<MessageKey, string> = {
@@ -127,7 +128,7 @@ const en: Record<MessageKey, string> = {
   ocrFailed: "Image recognition failed. Please try again.", operationFailed: "The operation failed. Please try again.", formulaRequired: "Enter a valid formula first.", editorPreferences: "Editor preferences",
   preferenceHint: "These settings stay on this device and never change the formula source.", appearance: "Appearance", light: "Light", dark: "Dark", system: "System",
   workspaceLayout: "Workspace layout", split: "Side by side", stacked: "Stacked", formulaAlignment: "Formula alignment", left: "Left", center: "Center",
-  right: "Right", previewScale: "Preview scale", cancel: "Cancel", close: "Close", save: "Save", footer: "LaTeX Live · A modern MathJax formula workspace",
+  right: "Right", previewScale: "Preview scale", restoreDefaults: "Restore defaults", cancel: "Cancel", close: "Close", save: "Save", footer: "LaTeX Live · A modern MathJax formula workspace",
 };
 
 const ja: Record<MessageKey, string> = {
@@ -150,7 +151,7 @@ const ja: Record<MessageKey, string> = {
   ocrFailed: "画像認識に失敗しました。もう一度お試しください。", operationFailed: "操作に失敗しました。もう一度お試しください。", formulaRequired: "有効な数式を先に入力してください。", editorPreferences: "エディター設定",
   preferenceHint: "設定はこの端末だけに保存され、数式ソースには影響しません。", appearance: "外観", light: "ライト", dark: "ダーク", system: "システム",
   workspaceLayout: "ワークスペース", split: "左右に並べる", stacked: "上下に並べる", formulaAlignment: "数式の配置", left: "左", center: "中央",
-  right: "右", previewScale: "プレビュー倍率", cancel: "キャンセル", close: "閉じる", save: "保存", footer: "LaTeX Live · MathJax ベースのモダン数式ワークスペース",
+  right: "右", previewScale: "プレビュー倍率", restoreDefaults: "初期設定に戻す", cancel: "キャンセル", close: "閉じる", save: "保存", footer: "LaTeX Live · MathJax ベースのモダン数式ワークスペース",
 };
 
 const dictionaries: Record<Locale, Record<MessageKey, string>> = { "zh-CN": zhCN, "zh-TW": zhTW, en, ja };

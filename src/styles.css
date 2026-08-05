@@ -138,6 +138,20 @@ button:disabled {
   display: none;
 }
 
+.source-editor-container {
+  container: source-editor / inline-size;
+}
+
+.editor-control-label {
+  display: none;
+}
+
+@container source-editor (min-width: 640px) {
+  .editor-control-label {
+    display: inline;
+  }
+}
+
 * {
   scrollbar-color: color-mix(in oklab, var(--muted-foreground) 45%, transparent) transparent;
   scrollbar-width: thin;

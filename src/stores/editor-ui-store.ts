@@ -26,6 +26,7 @@ interface EditorUiState {
   setActiveCategory: (category: CategoryTag) => void;
   setSymbolPanelOpen: (open: boolean) => void;
   setSettingsOpen: (open: boolean) => void;
+  restoreDefaultPreferences: () => void;
 }
 
 function detectBrowserLocale(): Locale {
@@ -37,15 +38,21 @@ function detectBrowserLocale(): Locale {
   return "en";
 }
 
+export function getDefaultEditorPreferences() {
+  return {
+    theme: "system" as const,
+    locale: detectBrowserLocale(),
+    layout: "stacked" as const,
+    alignment: "center" as const,
+    previewScale: 1,
+    sourceFontSize: 16,
+  };
+}
+
 export const useEditorUiStore = create<EditorUiState>()(
   persist(
     (set) => ({
-      theme: "system",
-      locale: detectBrowserLocale(),
-      layout: "split",
-      alignment: "center",
-      previewScale: 1,
-      sourceFontSize: 16,
+      ...getDefaultEditorPreferences(),
       activeCategory: "symbol",
       symbolPanelOpen: true,
       settingsOpen: false,
@@ -58,6 +65,7 @@ export const useEditorUiStore = create<EditorUiState>()(
       setActiveCategory: (activeCategory) => set({ activeCategory }),
       setSymbolPanelOpen: (symbolPanelOpen) => set({ symbolPanelOpen }),
       setSettingsOpen: (settingsOpen) => set({ settingsOpen }),
+      restoreDefaultPreferences: () => set(getDefaultEditorPreferences()),
     }),
     {
       name: "latexlive-ui",

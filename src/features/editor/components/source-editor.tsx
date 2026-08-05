@@ -48,7 +48,7 @@ export function SourceEditor({ ref, value, onChange, onAcceptCompletion, control
   };
 
   return (
-    <div className="relative flex min-h-[420px] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
+    <div className="source-editor-container relative flex min-h-[420px] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card">
       <div className="flex min-h-14 items-center justify-between border-b border-border px-4 sm:px-5">
         <div className="flex items-center gap-2">
           <div className="grid size-8 place-items-center rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
