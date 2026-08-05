@@ -1,0 +1,38 @@
+{
+  "name": "LaTeX Live",
+  "short_name": "LaTeX Live",
+  "description": "Online LaTeX formula editor with real-time preview and multi-format export.",
+  "lang": "en",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8fafc",
+  "theme_color": "#006edc",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Formula editor",
+      "short_name": "Editor",
+      "url": "/"
+    },
+    {
+      "name": "Documentation",
+      "short_name": "Docs",
+      "url": "/docs"
+    }
+  ]
+}

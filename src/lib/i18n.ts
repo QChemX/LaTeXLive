@@ -1,0 +1,202 @@
+import { useEditorUiStore } from "@/stores/editor-ui-store";
+
+export type Locale = "zh-CN" | "zh-TW" | "en" | "ja";
+
+const zhCN = {
+  brandTagline: "在线LaTeX公式编辑器",
+  documentation: "使用文档",
+  backToEditor: "返回编辑器",
+  docsTitle: "LaTeX Live 使用文档",
+  tableOfContents: "目录",
+  language: "切换语言",
+  theme: "切换主题",
+  settings: "偏好设置",
+  github: "查看 GitHub 源码",
+  shortcut: "快捷工具",
+  template: "公式模板",
+  imageRecognition: "图片识别",
+  inputArea: "输入区域",
+  inputAreaHint: "符号、模板与识图工具集中在这里",
+  dataLoadError: "工具数据加载失败，请刷新页面重试。",
+  sourceTitle: "LaTeX 源码",
+  sourceHint: "输入反斜杠命令，Tab 快速补全",
+  sourcePlaceholder: "例如：\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}",
+  clear: "清空",
+  color: "字体颜色",
+  font: "字体样式",
+  size: "字号",
+  environment: "环境",
+  sourceFontSize: "源码字号",
+  decreaseSourceSize: "减小源码字号",
+  increaseSourceSize: "增大源码字号",
+  decreasePreviewScale: "缩小预览",
+  increasePreviewScale: "放大预览",
+  previewTitle: "实时预览",
+  previewHint: "MathJax SVG 高质量渲染",
+  rendering: "渲染中",
+  invalidSyntax: "语法有误",
+  synced: "已同步",
+  preparing: "正在准备公式引擎…",
+  emptyPreview: "预览等待输入",
+  emptyPreviewHint: "在左侧输入公式，结果会自动出现在这里。",
+  extensions: "支持 Physics · Mhchem · AMS · Unicode 等扩展",
+  autocomplete: "自动补全 · Tab 选择首项",
+  lines: "行",
+  characters: "字符",
+  exportShare: "导出与分享",
+  outputImage: "输出图片",
+  outputCode: "输出代码",
+  escape: "转义",
+  share: "分享",
+  copyShareUrl: "复制分享 URL",
+  systemShare: "系统分享",
+  upload: "选择图片",
+  recognize: "开始识别",
+  removeImage: "移除图片",
+  dropTitle: "拖拽、粘贴或选择公式图片",
+  dropHint: "支持 PNG、JPG、WebP；部署识别 API 后可返回 LaTeX",
+  recognizing: "正在识别…",
+  imageReady: "图片已就绪",
+  ocrApiMissing: "图片预览可用；识别服务需配置 VITE_OCR_API_URL",
+  imageReadError: "无法读取图片，请选择有效的图片文件。",
+  ocrFailed: "图片识别失败，请稍后重试。",
+  operationFailed: "操作失败，请重试。",
+  formulaRequired: "请先输入有效公式。",
+  editorPreferences: "编辑器偏好",
+  preferenceHint: "这些设置只保存在当前设备，不会改变公式源码。",
+  appearance: "外观主题",
+  light: "浅色",
+  dark: "深色",
+  system: "跟随系统",
+  workspaceLayout: "工作区布局",
+  split: "左右分栏",
+  stacked: "上下排列",
+  formulaAlignment: "公式对齐",
+  left: "左对齐",
+  center: "居中",
+  right: "右对齐",
+  previewScale: "预览缩放",
+  cancel: "取消",
+  close: "关闭",
+  save: "保存设置",
+  footer: "LaTeX Live · 基于 MathJax 的现代公式工作台",
+} as const;
+
+export type MessageKey = keyof typeof zhCN;
+
+const zhTW: Record<MessageKey, string> = {
+  brandTagline: "線上 LaTeX 公式編輯器",
+  documentation: "使用文件", backToEditor: "返回編輯器", docsTitle: "LaTeX Live 使用文件",
+  tableOfContents: "目錄",
+  language: "切換語言", theme: "切換主題", settings: "偏好設定", github: "查看 GitHub 原始碼",
+  shortcut: "快捷工具", template: "公式範本", imageRecognition: "圖片識別", inputArea: "輸入區域",
+  inputAreaHint: "符號、範本與識圖工具集中在這裡", dataLoadError: "工具資料載入失敗，請重新整理頁面。", sourceTitle: "LaTeX 原始碼", sourceHint: "輸入反斜線命令，Tab 快速補全",
+  sourcePlaceholder: "例如：\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}",
+  clear: "清空", color: "字體顏色", font: "字體樣式", size: "字號", environment: "環境", sourceFontSize: "原始碼字號",
+  decreaseSourceSize: "縮小原始碼字號", increaseSourceSize: "放大原始碼字號", decreasePreviewScale: "縮小預覽", increasePreviewScale: "放大預覽",
+  previewTitle: "即時預覽", previewHint: "MathJax SVG 高品質渲染", rendering: "渲染中", invalidSyntax: "語法有誤", synced: "已同步",
+  preparing: "正在準備公式引擎…", emptyPreview: "預覽等待輸入", emptyPreviewHint: "在左側輸入公式，結果會自動出現在這裡。",
+  extensions: "支援 Physics · Mhchem · AMS · Unicode 等擴充", autocomplete: "自動補全 · Tab 選擇首項", lines: "行", characters: "字元",
+  exportShare: "匯出與分享", outputImage: "輸出圖片", outputCode: "輸出程式碼", escape: "轉義", share: "分享",
+  copyShareUrl: "複製分享 URL", systemShare: "系統分享", upload: "選擇圖片", recognize: "開始識別", removeImage: "移除圖片",
+  dropTitle: "拖曳、貼上或選擇公式圖片", dropHint: "支援 PNG、JPG、WebP；部署識別 API 後可回傳 LaTeX", recognizing: "正在識別…",
+  imageReady: "圖片已就緒", ocrApiMissing: "圖片預覽可用；識別服務需設定 VITE_OCR_API_URL", imageReadError: "無法讀取圖片，請選擇有效的圖片檔案。",
+  ocrFailed: "圖片識別失敗，請稍後再試。", operationFailed: "操作失敗，請再試一次。", formulaRequired: "請先輸入有效公式。", editorPreferences: "編輯器偏好",
+  preferenceHint: "這些設定只保存在目前裝置，不會改變公式原始碼。", appearance: "外觀主題", light: "淺色", dark: "深色", system: "跟隨系統",
+  workspaceLayout: "工作區版面", split: "左右分欄", stacked: "上下排列", formulaAlignment: "公式對齊", left: "靠左", center: "置中",
+  right: "靠右", previewScale: "預覽縮放", cancel: "取消", close: "關閉", save: "儲存設定", footer: "LaTeX Live · 基於 MathJax 的現代公式工作台",
+};
+
+const en: Record<MessageKey, string> = {
+  brandTagline: "Online LaTeX Formula Editor",
+  documentation: "Documentation", backToEditor: "Back to editor", docsTitle: "LaTeX Live Documentation",
+  tableOfContents: "Contents",
+  language: "Change language", theme: "Toggle theme", settings: "Preferences", github: "View source on GitHub",
+  shortcut: "Quick tools", template: "Formula templates", imageRecognition: "Image recognition", inputArea: "Input",
+  inputAreaHint: "Symbols, templates, and image tools in one place", dataLoadError: "Tool data could not be loaded. Refresh the page to try again.", sourceTitle: "LaTeX source", sourceHint: "Type a backslash command and press Tab to complete",
+  sourcePlaceholder: "Example: \\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}",
+  clear: "Clear", color: "Text color", font: "Font style", size: "Font size", environment: "Environment", sourceFontSize: "Source font size",
+  decreaseSourceSize: "Decrease source font size", increaseSourceSize: "Increase source font size", decreasePreviewScale: "Zoom preview out", increasePreviewScale: "Zoom preview in",
+  previewTitle: "Live preview", previewHint: "High-quality MathJax SVG rendering", rendering: "Rendering", invalidSyntax: "Invalid syntax", synced: "Synced",
+  preparing: "Preparing the formula engine…", emptyPreview: "Waiting for input", emptyPreviewHint: "Enter a formula on the left to preview it here.",
+  extensions: "Supports Physics · Mhchem · AMS · Unicode extensions", autocomplete: "Autocomplete · Tab selects the first item", lines: "lines", characters: "characters",
+  exportShare: "Export & share", outputImage: "Export image", outputCode: "Export code", escape: "Escape", share: "Share",
+  copyShareUrl: "Copy share URL", systemShare: "System share", upload: "Choose image", recognize: "Recognize", removeImage: "Remove image",
+  dropTitle: "Drop, paste, or choose a formula image", dropHint: "PNG, JPG, and WebP supported; add an OCR API to return LaTeX", recognizing: "Recognizing…",
+  imageReady: "Image ready", ocrApiMissing: "Preview is ready; configure VITE_OCR_API_URL to enable OCR", imageReadError: "The image could not be read. Choose a valid image file.",
+  ocrFailed: "Image recognition failed. Please try again.", operationFailed: "The operation failed. Please try again.", formulaRequired: "Enter a valid formula first.", editorPreferences: "Editor preferences",
+  preferenceHint: "These settings stay on this device and never change the formula source.", appearance: "Appearance", light: "Light", dark: "Dark", system: "System",
+  workspaceLayout: "Workspace layout", split: "Side by side", stacked: "Stacked", formulaAlignment: "Formula alignment", left: "Left", center: "Center",
+  right: "Right", previewScale: "Preview scale", cancel: "Cancel", close: "Close", save: "Save", footer: "LaTeX Live · A modern MathJax formula workspace",
+};
+
+const ja: Record<MessageKey, string> = {
+  brandTagline: "オンライン LaTeX 数式エディター",
+  documentation: "ドキュメント", backToEditor: "エディターに戻る", docsTitle: "LaTeX Live ドキュメント",
+  tableOfContents: "目次",
+  language: "言語を切り替える", theme: "テーマを切り替える", settings: "環境設定", github: "GitHub でソースを見る",
+  shortcut: "クイックツール", template: "数式テンプレート", imageRecognition: "画像認識", inputArea: "入力エリア",
+  inputAreaHint: "記号、テンプレート、画像ツールを一か所に", dataLoadError: "ツールデータを読み込めませんでした。ページを再読み込みしてください。", sourceTitle: "LaTeX ソース", sourceHint: "バックスラッシュコマンドを入力し、Tab で補完",
+  sourcePlaceholder: "例：\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}",
+  clear: "クリア", color: "文字色", font: "フォント", size: "文字サイズ", environment: "環境", sourceFontSize: "ソース文字サイズ",
+  decreaseSourceSize: "ソース文字を小さくする", increaseSourceSize: "ソース文字を大きくする", decreasePreviewScale: "プレビューを縮小", increasePreviewScale: "プレビューを拡大",
+  previewTitle: "ライブプレビュー", previewHint: "高品質な MathJax SVG レンダリング", rendering: "処理中", invalidSyntax: "構文エラー", synced: "同期済み",
+  preparing: "数式エンジンを準備中…", emptyPreview: "入力待ち", emptyPreviewHint: "左側に数式を入力すると、ここに結果が表示されます。",
+  extensions: "Physics · Mhchem · AMS · Unicode 拡張に対応", autocomplete: "自動補完 · Tab で先頭候補を選択", lines: "行", characters: "文字",
+  exportShare: "出力と共有", outputImage: "画像を出力", outputCode: "コードを出力", escape: "エスケープ", share: "共有",
+  copyShareUrl: "共有 URL をコピー", systemShare: "システム共有", upload: "画像を選択", recognize: "認識を開始", removeImage: "画像を削除",
+  dropTitle: "数式画像をドロップ、貼り付け、または選択", dropHint: "PNG、JPG、WebP 対応。OCR API の設定後に LaTeX を取得できます", recognizing: "認識中…",
+  imageReady: "画像の準備完了", ocrApiMissing: "プレビューは利用可能です。OCR には VITE_OCR_API_URL の設定が必要です", imageReadError: "画像を読み込めません。有効な画像ファイルを選択してください。",
+  ocrFailed: "画像認識に失敗しました。もう一度お試しください。", operationFailed: "操作に失敗しました。もう一度お試しください。", formulaRequired: "有効な数式を先に入力してください。", editorPreferences: "エディター設定",
+  preferenceHint: "設定はこの端末だけに保存され、数式ソースには影響しません。", appearance: "外観", light: "ライト", dark: "ダーク", system: "システム",
+  workspaceLayout: "ワークスペース", split: "左右に並べる", stacked: "上下に並べる", formulaAlignment: "数式の配置", left: "左", center: "中央",
+  right: "右", previewScale: "プレビュー倍率", cancel: "キャンセル", close: "閉じる", save: "保存", footer: "LaTeX Live · MathJax ベースのモダン数式ワークスペース",
+};
+
+const dictionaries: Record<Locale, Record<MessageKey, string>> = { "zh-CN": zhCN, "zh-TW": zhTW, en, ja };
+
+export function translate(locale: Locale, key: MessageKey): string {
+  return dictionaries[locale][key];
+}
+
+export const localeLabels: Record<Locale, string> = {
+  "zh-CN": "简体中文",
+  "zh-TW": "繁體中文",
+  en: "English",
+  ja: "日本語",
+};
+
+const categoryLabels: Record<string, Record<Locale, string>> = {
+  symbol: { "zh-CN": "常用符号", "zh-TW": "常用符號", en: "Symbols", ja: "記号" },
+  greek: { "zh-CN": "希腊字母", "zh-TW": "希臘字母", en: "Greek", ja: "ギリシャ文字" },
+  frac: { "zh-CN": "分数微分", "zh-TW": "分數微分", en: "Fractions", ja: "分数・微分" },
+  sqrt: { "zh-CN": "根式角标", "zh-TW": "根式角標", en: "Roots & scripts", ja: "根号・添字" },
+  limit: { "zh-CN": "极限对数", "zh-TW": "極限對數", en: "Limits & logs", ja: "極限・対数" },
+  trig: { "zh-CN": "三角函数", "zh-TW": "三角函數", en: "Trigonometry", ja: "三角関数" },
+  integral: { "zh-CN": "积分运算", "zh-TW": "積分運算", en: "Integrals", ja: "積分" },
+  sum: { "zh-CN": "大型运算", "zh-TW": "大型運算", en: "Big operators", ja: "大型演算子" },
+  bracket: { "zh-CN": "括号取整", "zh-TW": "括號取整", en: "Brackets", ja: "括弧" },
+  matrix: { "zh-CN": "数组矩阵", "zh-TW": "陣列矩陣", en: "Matrices", ja: "行列" },
+  algebra: { "zh-CN": "代数", "zh-TW": "代數", en: "Algebra", ja: "代数" },
+  geometry: { "zh-CN": "几何", "zh-TW": "幾何", en: "Geometry", ja: "幾何" },
+  inequality: { "zh-CN": "不等式", "zh-TW": "不等式", en: "Inequalities", ja: "不等式" },
+  calculous: { "zh-CN": "微积分", "zh-TW": "微積分", en: "Calculus", ja: "微積分" },
+  array: { "zh-CN": "矩阵", "zh-TW": "矩陣", en: "Matrices", ja: "行列" },
+  trigonometry: { "zh-CN": "三角", "zh-TW": "三角", en: "Trigonometry", ja: "三角" },
+  statistics: { "zh-CN": "统计", "zh-TW": "統計", en: "Statistics", ja: "統計" },
+  sequence: { "zh-CN": "数列", "zh-TW": "數列", en: "Sequences", ja: "数列" },
+  physics: { "zh-CN": "物理", "zh-TW": "物理", en: "Physics", ja: "物理" },
+  chemistry: { "zh-CN": "化学", "zh-TW": "化學", en: "Chemistry", ja: "化学" },
+};
+
+export function categoryLabel(tag: string, locale: Locale, fallback: string): string {
+  return categoryLabels[tag]?.[locale] ?? fallback;
+}
+
+export function useI18n() {
+  const locale = useEditorUiStore((state) => state.locale);
+  return {
+    locale,
+    t: (key: MessageKey): string => translate(locale, key),
+  };
+}
