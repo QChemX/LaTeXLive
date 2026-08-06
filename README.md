@@ -44,7 +44,7 @@ A dedicated `/docs` route provides a practical LaTeX guide in Simplified Chinese
 
 ### Formula editing
 
-- Live SVG preview powered by MathJax.
+- Live vector SVG preview powered by the typed MathJax 4 npm modules.
 - LaTeX command autocomplete with `Tab` completion.
 - Adjustable source font size and preview zoom.
 - Left, center, and right preview alignment.
@@ -57,6 +57,7 @@ A dedicated `/docs` route provides a practical LaTeX guide in Simplified Chinese
 
 - 10 categorized quick-tool menus for symbols, Greek letters, fractions, radicals, limits, trigonometry, integrals, large operators, brackets, and matrices.
 - 10 formula-template categories covering algebra, geometry, inequalities, calculus, matrices, trigonometry, statistics, sequences, physics, and chemistry.
+- Symbol, template, font, and size previews are generated as SVG at runtime instead of loading bitmap assets.
 - Floating, collapsible menus designed for both pointer and touch interaction.
 
 ### Image recognition
@@ -94,8 +95,8 @@ A dedicated `/docs` route provides a practical LaTeX guide in Simplified Chinese
 | Server state      | TanStack Query v5                                                              |
 | Client UI state   | Zustand v5 with persisted preferences                                          |
 | Validation        | Zod                                                                            |
-| Formula rendering | MathJax SVG with AMS, Physics, Mhchem, Cancel, Unicode, and related extensions |
-| Format conversion | Temml and browser-native SVG/canvas APIs                                       |
+| Formula rendering | MathJax 4 typed ESM modules with lazy, npm-backed SVG font chunks               |
+| Format conversion | MathJax 4 MathML plus browser-native SVG/canvas APIs                             |
 | Notifications     | Sonner                                                                         |
 | PWA               | Web App Manifest and Service Worker                                            |
 | Deployment        | Vercel-ready static Vite output                                                |
@@ -182,13 +183,13 @@ src/
 ├── features/
 │   ├── docs/                  # Bilingual user documentation
 │   └── editor/                # Editor components, hooks, APIs, and exports
-├── lib/                       # i18n, utilities, and PWA registration
+├── lib/                       # MathJax 4 runtime, i18n, utilities, and PWA registration
+├── service-worker.ts          # Typed Service Worker build entry
 └── stores/                    # Persisted Zustand UI preferences
 public/
-├── assets/                    # Symbol and template resources
-├── mathjax/                   # Locally served MathJax runtime
-├── manifest.webmanifest       # PWA metadata
-└── sw.js                      # Service Worker
+├── data/                      # Formula catalog and autocomplete data
+├── icons/                     # Installable-app icons
+└── manifest.webmanifest       # PWA metadata
 ```
 
 The application follows a feature-first structure.

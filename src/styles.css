@@ -130,6 +130,28 @@ button:disabled {
   overflow: visible;
 }
 
+.mathjax-glyph {
+  display: inline-grid;
+  place-items: center;
+  color: currentColor;
+}
+
+.mathjax-glyph > span,
+.mathjax-glyph mjx-container {
+  display: inline-grid;
+  max-height: 100%;
+  max-width: 100%;
+  place-items: center;
+  margin: 0 !important;
+}
+
+.mathjax-glyph svg {
+  display: block;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: visible;
+}
+
 .scrollbar-none {
   scrollbar-width: none;
 }

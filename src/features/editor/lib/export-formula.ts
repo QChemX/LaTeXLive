@@ -1,29 +1,4 @@
-import temmlScriptUrl from "temml/dist/temml.min.js?url";
-
-interface TemmlApi {
-  renderToString: (latex: string, options: { displayMode: boolean; throwOnError: boolean }) => string;
-}
-
-let temmlPromise: Promise<TemmlApi> | null = null;
-
-function loadTemml(): Promise<TemmlApi> {
-  if (window.temml) return Promise.resolve(window.temml);
-  if (temmlPromise) return temmlPromise;
-
-  temmlPromise = new Promise<TemmlApi>((resolve, reject) => {
-    const script = document.createElement("script");
-    script.src = temmlScriptUrl;
-    script.async = true;
-    script.onload = () => {
-      if (window.temml) resolve(window.temml);
-      else reject(new Error("MathML 转换器加载失败"));
-    };
-    script.onerror = () => reject(new Error("MathML 转换器加载失败"));
-    document.head.append(script);
-  });
-
-  return temmlPromise;
-}
+import { convertLatexToMathMl } from "@/lib/mathjax-loader";
 
 function saveBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
@@ -101,8 +76,7 @@ export async function downloadRaster(
 }
 
 export async function latexToMathML(latex: string): Promise<string> {
-  const temml = await loadTemml();
-  return temml.renderToString(latex, { displayMode: true, throwOnError: false });
+  return convertLatexToMathMl(latex);
 }
 
 export function latexToAsciiMath(latex: string): string {

@@ -7,6 +7,7 @@ import {
   type LatexSymbol,
   type SymbolGroup,
 } from "@/features/editor/types/editor";
+import { menuCategoryPreview } from "@/features/editor/lib/preview-latex";
 
 const rawSymbolSchema = z.object({
   tag: z.string(),
@@ -84,7 +85,6 @@ function groupSymbols(items: z.infer<typeof rawSymbolSchema>[]): SymbolGroup[] {
 
     const symbol: LatexSymbol = {
       tag: item.tag,
-      name: item.name,
       latex: item.latex,
       cursor: item.cursor,
       standby: item.standby,
@@ -109,7 +109,7 @@ export async function fetchEditorCatalog(): Promise<EditorCatalog> {
 
   const categories = source.layer1.cont.flatMap((item) =>
     isCategoryTag(item.tag)
-      ? [{ tag: item.tag, name: item.name, description: item.descript }]
+      ? [{ tag: item.tag, description: item.descript }]
       : [],
   );
 
@@ -121,8 +121,8 @@ export async function fetchEditorCatalog(): Promise<EditorCatalog> {
     id: index === 0 ? "toolbar" as const : "template" as const,
     categories: menu.layer1.cont.map((item) => ({
       tag: item.tag,
-      name: item.name,
       description: item.descript,
+      previewLatex: menuCategoryPreview(item.tag),
     })),
     items: Object.fromEntries(
       Object.entries(menu.layer2.cont).map(([tag, group]) => [tag, groupSymbols(group.cont)]),
@@ -134,7 +134,6 @@ export async function fetchEditorCatalog(): Promise<EditorCatalog> {
   const toControlItems = (tag: "color" | "fontfamily" | "fontsize"): LatexSymbol[] =>
     (data.immediate.control.layer2.cont[tag]?.cont ?? []).map((item) => ({
       tag: item.tag,
-      name: item.name,
       latex: item.latex,
       cursor: item.cursor,
       standby: item.standby,

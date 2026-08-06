@@ -15,19 +15,17 @@ export type CategoryTag = (typeof categoryTags)[number];
 
 export interface SymbolCategory {
   tag: CategoryTag;
-  name: string;
   description: string;
 }
 
 export interface MenuCategory {
   tag: string;
-  name: string;
   description: string;
+  previewLatex: string;
 }
 
 export interface LatexSymbol {
   tag: string;
-  name: string;
   latex: string;
   cursor: number;
   standby: string;

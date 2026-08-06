@@ -45,7 +45,7 @@ LaTeX Live 是一款运行在浏览器中的数学公式工作台，使用纯 Re
 
 ### 公式编辑
 
-- 基于 MathJax 的 SVG 实时预览。
+- 基于 MathJax 4 类型化 npm 模块的矢量 SVG 实时预览。
 - LaTeX 命令自动补全，支持按 `Tab` 接受建议。
 - 可独立调节源码字号与预览缩放比例。
 - 支持预览左对齐、居中和右对齐。
@@ -58,6 +58,7 @@ LaTeX Live 是一款运行在浏览器中的数学公式工作台，使用纯 Re
 
 - 10 类快捷工具：常用符号、希腊字母、分式、根式与上下标、极限与对数、三角函数、积分、大型运算、括号和矩阵。
 - 10 类公式模板：代数、几何、不等式、微积分、矩阵、三角函数、统计、数列、物理和化学。
+- 符号、模板、字体与字号预览均在运行时生成 SVG，不再加载位图资源。
 - 适配鼠标与触摸操作的浮动折叠菜单。
 
 ### 图片识别
@@ -95,8 +96,8 @@ LaTeX Live 是一款运行在浏览器中的数学公式工作台，使用纯 Re
 | 服务端状态     | TanStack Query v5                                              |
 | 客户端 UI 状态 | Zustand v5，持久化用户偏好                                     |
 | 数据校验       | Zod                                                            |
-| 公式渲染       | MathJax SVG，以及 AMS、Physics、Mhchem、Cancel、Unicode 等扩展 |
-| 格式转换       | Temml、浏览器原生 SVG 与 Canvas API                            |
+| 公式渲染       | MathJax 4 类型化 ESM 模块，以及按需加载的 npm SVG 字体分片     |
+| 格式转换       | MathJax 4 MathML、浏览器原生 SVG 与 Canvas API                 |
 | 消息提示       | Sonner                                                         |
 | PWA            | Web App Manifest、Service Worker                               |
 | 部署           | 可直接部署至 Vercel 的 Vite 静态产物                           |
@@ -183,13 +184,13 @@ src/
 ├── features/
 │   ├── docs/                  # 双语使用文档
 │   └── editor/                # 编辑器组件、Hooks、API 与导出功能
-├── lib/                       # 国际化、工具函数与 PWA 注册
+├── lib/                       # MathJax 4 运行时、国际化、工具函数与 PWA 注册
+├── service-worker.ts          # 类型安全的 Service Worker 构建入口
 └── stores/                    # 持久化的 Zustand UI 偏好
 public/
-├── assets/                    # 符号与公式模板资源
-├── mathjax/                   # 本地提供的 MathJax 运行时
-├── manifest.webmanifest       # PWA 元数据
-└── sw.js                      # Service Worker
+├── data/                      # 公式目录与自动补全数据
+├── icons/                     # 可安装应用图标
+└── manifest.webmanifest       # PWA 元数据
 ```
 
 项目遵循 Feature-First 组织方式。
