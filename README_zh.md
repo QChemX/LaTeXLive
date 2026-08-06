@@ -1,24 +1,45 @@
 <p align="center">
-  <img src="./public/favicon.svg" width="88" height="88" alt="LaTeX Live 标志" />
+  <img
+    src="./public/favicon.svg"
+    width="88"
+    height="88"
+    alt="LaTeX Live"
+  />
 </p>
 
 <h1 align="center">LaTeX Live</h1>
 
-<p align="center"><strong>现代、响应式的在线 LaTeX 公式编辑器，支持实时预览与多格式导出。</strong></p>
+<p align="center">
+  <strong
+    >现代、响应式的在线 LaTeX 公式编辑器，支持实时预览与多格式导出。</strong
+  >
+</p>
 
 <p align="center">
-  <a href="./README.md">English</a> ·
-  <a href="./README_zh.md">简体中文</a> ·
-  <a href="https://github.com/QChemX/LaTeXLive">GitHub</a>
+    <a href="./README.md">English</a> · <b>简体中文</b>
 </p>
+
+<div align="center">
+
+[![GitHub deployments](https://img.shields.io/github/deployments/QChemX/LaTeXLive/Production)](https://github.com/QChemX/LaTeXLive/deployments)
+[![GitHub last commit](https://img.shields.io/github/last-commit/QChemX/LaTeXLive)](https://github.com/QChemX/LaTeXLive/commits/main/)
+[![GitHub License](https://img.shields.io/github/license/QChemX/LaTeXLive)](https://github.com/QChemX/LaTeXLive/blob/main/LICENSE)
+[![Vercel Deploy](https://deploy-badge.vercel.app/vercel/latexlive)](https://latexlive.vercel.app/)
+
+</div>
 
 ## 简介
 
-LaTeX Live 是一款运行在浏览器中的数学公式工作台，使用纯 React 19 构建。它将 MathJax 实时渲染、分类符号和公式模板、图片转 LaTeX、响应式编辑体验，以及适用于论文、办公文档、网页和其他排版系统的多格式导出整合在一个应用中。
+LaTeX Live 是一款运行在浏览器中的数学公式工作台，使用纯 React 19 构建。
+它将 MathJax 实时渲染、分类符号和公式模板、图片转 LaTeX、响应式编辑体验，
+以及适用于论文、办公文档、网页和其他排版系统的多格式导出整合在一个应用中。
 
-公式编辑与渲染默认完全在浏览器本地完成。只有当使用者主动启用图片识别并配置 OCR 接口时，图片内容才会发送至对应的远程服务。
+公式编辑与渲染默认完全在浏览器本地完成。
+只有当使用者主动启用图片识别并配置 OCR 接口时，
+图片内容才会发送至对应的远程服务。
 
-应用支持桌面端与移动端、浅色与深色主题、PWA 安装，以及四种界面语言。`/docs` 路由提供面向使用者的简体中文和 English LaTeX 使用文档。
+应用支持桌面端与移动端、浅色与深色主题、PWA 安装，以及四种界面语言。
+`/docs` 路由提供面向使用者的简体中文和 English LaTeX 使用文档。
 
 ## 主要功能
 
@@ -171,58 +192,12 @@ public/
 └── sw.js                      # Service Worker
 ```
 
-项目遵循 Feature-First 组织方式。来自 API 的数据由 TanStack Query 管理，Zustand 仅保存主题、语言、布局、对齐和缩放等界面偏好。
-
-## 在线部署
-
-### 通过 Vercel 控制台部署
-
-1. Fork 本仓库，或者将项目推送至自己的 Git 仓库。
-2. 在 Vercel 中导入仓库。
-3. 选择 Vite 框架预设。
-4. 将构建命令设置为 `npm run build`，输出目录设置为 `dist`。
-5. 仅在需要图片识别时添加 `VITE_OCR_API_URL` 环境变量。
-6. 执行部署。
-
-项目包含的 [`vercel.json`](./vercel.json) 已配置 Vite 构建，并会将所有应用路由回退到 `index.html`。因此直接访问或刷新 `/docs`、公式分享链接时不会出现 404。
-
-也可以使用 Vercel 的仓库导入流程：
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FQChemX%2FLaTeXLive)
-
-### 通过 Vercel CLI 部署
-
-```bash
-npx vercel
-npx vercel --prod
-```
-
-### 部署到其他静态托管平台
-
-执行 `npm run build`，发布生成的 `dist/` 目录，并将未知路由回退至 `index.html`。生产环境中的 Service Worker 和 PWA 安装能力需要 HTTPS。
-
-## 浏览器数据与隐私
-
-- 公式渲染完全在浏览器本地进行。
-- 界面偏好存储在本地存储的 `latexlive-ui` 项中。
-- 分享链接会将公式写入 `formula` 查询参数。
-- 只有使用者主动执行识别时，图片才会发送至所配置的 OCR 接口。
-- 项目默认不包含分析统计或账号系统。
-
-## 参与贡献
-
-欢迎提交 Issue 和 Pull Request。提交修改前请运行：
-
-```bash
-npm run lint
-npm run build
-```
-
-新增代码应保持严格类型，避免使用 `any`，遵循 Feature-First 架构，并维持响应式与无障碍体验。
+项目遵循 Feature-First 组织方式。
+来自 API 的数据由 TanStack Query 管理，Zustand 仅保存主题、语言、布局、对齐和缩放等界面偏好。
 
 ## 开源许可
 
-本项目采用 [Apache License 2.0](./LICENSE.txt) 开源许可。
+本项目采用 [Apache License 2.0](./LICENSE) 开源许可。
 
-LaTeX Live 是原始项目 [ubnm/LaTeXLive](https://github.com/ubnm/LaTeXLive) 的 React 重写版本。重新分发由旧版迁移的资源时，请保留适用的上游声明与署名信息。
-
+LaTeX Live 是原始项目 [ubnm/LaTeXLive](https://github.com/ubnm/LaTeXLive) 的 React 重写版本。
+重新分发由旧版迁移的资源时，请保留适用的上游声明与署名信息。
