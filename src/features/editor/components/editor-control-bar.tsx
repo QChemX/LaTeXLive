@@ -8,6 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { MathJaxFormula } from "@/features/editor/components/mathjax-formula";
+import { controlPreviewLatex } from "@/features/editor/lib/preview-latex";
 import { type LatexSymbol } from "@/features/editor/types/editor";
 import { type LatexEnvironment } from "@/features/editor/lib/insert-latex";
 import { cn } from "@/lib/utils";
@@ -63,11 +65,20 @@ export function EditorControlBar({ controls, onInsert, onEnvironment, onClear, c
                       title={symbolLabel(symbol)}
                       className="grid min-h-11 place-items-center rounded-lg border border-border bg-background p-1.5 hover:border-primary/35 hover:bg-primary/7"
                     >
-                      <img
-                        src={`/assets/img/immediate/${tag}/${symbol.name}`}
-                        alt={symbolLabel(symbol)}
-                        className={cn("max-h-8 max-w-full object-contain", tag !== "color" && "dark:rounded dark:bg-white dark:p-0.5")}
-                      />
+                      {tag === "color" ? (
+                        <span
+                          role="img"
+                          aria-label={symbolLabel(symbol)}
+                          className="size-7 rounded-full border border-black/15 shadow-sm ring-2 ring-white/80 dark:ring-black/20"
+                          style={{ backgroundColor: symbol.tag }}
+                        />
+                      ) : (
+                        <MathJaxFormula
+                          latex={controlPreviewLatex(tag, symbol.latex)}
+                          label={symbolLabel(symbol)}
+                          className="h-8 w-full text-sm"
+                        />
+                      )}
                     </DropdownMenuItem>
                   ))}
                 </div>

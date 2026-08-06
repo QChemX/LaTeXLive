@@ -9,6 +9,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ImageRecognizer } from "@/features/editor/components/image-recognizer";
+import { MathJaxFormula } from "@/features/editor/components/mathjax-formula";
+import { formulaPreviewLatex } from "@/features/editor/lib/preview-latex";
 import { type EditorCatalog, type LatexSymbol } from "@/features/editor/types/editor";
 import { cn } from "@/lib/utils";
 import { categoryLabel, useI18n } from "@/lib/i18n";
@@ -80,10 +82,10 @@ export function InputToolbox({ catalog, onInsert, onRecognized }: InputToolboxPr
                     type="button"
                     className="group flex min-w-[4.25rem] flex-1 flex-col items-center justify-center gap-1 rounded-xl border border-transparent px-2 py-2 outline-none transition hover:border-primary/20 hover:bg-primary/7 data-[state=open]:border-primary/25 data-[state=open]:bg-primary/10 sm:min-w-[5.5rem]"
                   >
-                    <img
-                      src={`/assets/img/${isTemplate ? "template" : "shortcut"}/layer1/${category.name}`}
-                      alt=""
-                      className="h-8 w-10 object-contain dark:rounded-md dark:bg-white dark:p-0.5 sm:h-9"
+                    <MathJaxFormula
+                      latex={category.previewLatex}
+                      label={categoryLabel(category.tag, locale, category.description)}
+                      className="h-8 w-12 text-lg sm:h-9"
                     />
                     <span className="max-w-20 truncate text-[11px] text-muted-foreground group-data-[state=open]:text-primary sm:text-xs">
                       {categoryLabel(category.tag, locale, category.description)}
@@ -113,11 +115,10 @@ export function InputToolbox({ catalog, onInsert, onRecognized }: InputToolboxPr
                               isTemplate ? "min-h-16 p-2" : "grid aspect-square min-h-10 place-items-center p-1.5",
                             )}
                           >
-                            <img
-                              src={`/assets/img/${isTemplate ? "template" : "shortcut"}/layer2/${category.tag}/${symbol.name.split("?")[0]}`}
-                              alt={symbolLabel(symbol)}
-                              loading="lazy"
-                              className={cn("max-w-full object-contain", isTemplate ? "max-h-14" : "max-h-7", "dark:rounded dark:bg-white dark:p-0.5")}
+                            <MathJaxFormula
+                              latex={formulaPreviewLatex(symbol.latex)}
+                              label={symbolLabel(symbol)}
+                              className={cn("max-w-full", isTemplate ? "h-12 w-full text-xs" : "size-8 text-sm")}
                             />
                           </DropdownMenuItem>
                         ))}
