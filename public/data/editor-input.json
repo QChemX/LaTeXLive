@@ -1,11 +1,13 @@
 {
-	"shortcut": [{
+	"shortcut": [
+		{
 			"name": "toolbar",
 			"descript": "快捷工具",
 			"descript_en": "shortcut",
 			"layer1": {
 				"path": "/img/shortcut/layer1/",
-				"cont": [{
+				"cont": [
+					{
 						"tag": "symbol",
 						"name": "symbol.png",
 						"descript": "常用符号",
@@ -64,7 +66,8 @@
 					"symbol": {
 						"defaultsize": 1.6,
 						"defaultpadding": "0.1rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "二元运算符 Binary operations",
 								"name_en": "Binary operations",
@@ -1687,7 +1690,8 @@
 					"greek": {
 						"defaultsize": 1.7,
 						"defaultpadding": "0.2rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "小写 Lowercase",
 								"latex": "",
@@ -2440,7 +2444,8 @@
 					"frac": {
 						"defaultsize": 3,
 						"defaultpadding": "1rem 0.2rem 1rem 0.2rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "分数 Fractions",
 								"latex": "",
@@ -2687,7 +2692,8 @@
 					"sqrt": {
 						"defaultsize": 3,
 						"defaultpadding": "1rem 0.2rem 1rem 0.2rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "根式 Radicals",
 								"latex": "",
@@ -3099,7 +3105,8 @@
 					"limit": {
 						"defaultsize": 3,
 						"defaultpadding": "1rem 0.2rem 1rem 0.2rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "极限 Limits",
 								"latex": "",
@@ -3346,7 +3353,8 @@
 					"trig": {
 						"defaultsize": 4,
 						"defaultpadding": "0.2rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "三角函数 Trigonometric functions",
 								"latex": "",
@@ -3725,7 +3733,8 @@
 					"integral": {
 						"defaultsize": 5,
 						"defaultpadding": "0.2rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "积分 Integral",
 								"latex": "",
@@ -3895,7 +3904,8 @@
 					"sum": {
 						"defaultsize": 4,
 						"defaultpadding": "0.2rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "求和 Summation",
 								"latex": "",
@@ -4175,7 +4185,8 @@
 					"bracket": {
 						"defaultsize": 5,
 						"defaultpadding": "1rem 0.2rem 1rem 0.2rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "divider",
 								"name": "括号 Brackets",
 								"latex": "",
@@ -4345,7 +4356,8 @@
 					"matrix": {
 						"defaultsize": 5.2,
 						"defaultpadding": "1.5rem 0.5rem 1.5rem 0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "matrix",
 								"name": "matrix_1_matrix.svg",
 								"latex": "\\begin{matrix}…&…\\end{matrix}",
@@ -4475,7 +4487,8 @@
 			"descript": "公式模板",
 			"layer1": {
 				"path": "/img/template/layer1/",
-				"cont": [{
+				"cont": [
+					{
 						"tag": "algebra",
 						"name": "algebra.png",
 						"descript": "代数"
@@ -4533,7 +4546,8 @@
 					"algebra": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "algebra_1",
 								"name": "algebra_1.png",
 								"latex": "\\left(x-1\\right)\\left(x+3\\right) ",
@@ -4681,7 +4695,8 @@
 					"geometry": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "geometry_1",
 								"name": "geometry_1.png",
 								"latex": "\\Delta A B C",
@@ -4807,7 +4822,8 @@
 					"inequality": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "inequality_1",
 								"name": "inequality_1.png",
 								"latex": "a > b,b > c \\Rightarrow a > c ",
@@ -4955,7 +4971,8 @@
 					"calculous": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "calculous_1",
 								"name": "calculous_1.png?v1.3.0.200619",
 								"latex": "\\frac{\\mathrm{d}}{\\mathrm{d}x}x^n=nx^{n-1} ",
@@ -5114,7 +5131,8 @@
 					"array": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "array_1",
 								"name": "array_1.png",
 								"latex": "\\begin{pmatrix}  \r\n  1 & 0 \\\\  \r\n  0 & 1  \r\n\\end{pmatrix} ",
@@ -5207,7 +5225,8 @@
 					"trigonometry": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "trigonometry_1",
 								"name": "trigonometry_1.png",
 								"latex": "e^{i \\theta} ",
@@ -5355,7 +5374,8 @@
 					"statistics": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "statistics_1",
 								"name": "statistics_1.png",
 								"latex": "C_{r}^{n} ",
@@ -5536,7 +5556,8 @@
 					"sequence": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "sequence_1",
 								"name": "sequence_1.png",
 								"latex": "a_{n}=a_{1}q^{n-1} ",
@@ -5651,7 +5672,8 @@
 					"physics": {
 						"defaultsize": "48%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "physics_1",
 								"name": "physics_1.png",
 								"latex": "\\sum {{{ \\mathord{ \\buildrel{ \\lower3pt \\hbox{$ \\scriptscriptstyle \\rightharpoonup$}} \\over F} }_i}} = \\frac{{d \\mathord{ \\buildrel{ \\lower3pt \\hbox{$ \\scriptscriptstyle \\rightharpoonup$}} \\over v} }}{{dt}} = 0 ",
@@ -5920,7 +5942,8 @@
 					"chemistry": {
 						"defaultsize": "100%",
 						"defaultpadding": "0.5rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "chemistry_1",
 								"name": "chemistry_1.png",
 								"latex": "%此公式需要在【设置】中开启mhchem扩展支持 具体用法请参考【帮助】2.11.2 \r\n\\ce{SO4^2- + Ba^2+ -> BaSO4 v} ",
@@ -5977,7 +6000,8 @@
 			"descript": "控制面板",
 			"layer1": {
 				"path": "",
-				"cont": [{
+				"cont": [
+					{
 						"tag": "color",
 						"name": "<i class='fa fa-paint-brush'></i>颜色",
 						"descript": "",
@@ -6003,7 +6027,8 @@
 					"color": {
 						"defaultsize": 1.6,
 						"defaultpadding": "0.1rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "Blue",
 								"name": "color1.png",
 								"latex": "{\\color{Blue} } ",
@@ -6140,7 +6165,8 @@
 					"fontfamily": {
 						"defaultsize": 1.6,
 						"defaultpadding": "0.1rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "font1",
 								"name": "font1.png",
 								"latex": "\\mathrm{} ",
@@ -6233,7 +6259,8 @@
 					"fontsize": {
 						"defaultsize": 1.6,
 						"defaultpadding": "0.1rem",
-						"cont": [{
+						"cont": [
+							{
 								"tag": "size1",
 								"name": "size1.png",
 								"latex": "{\\tiny } ",
@@ -6344,7 +6371,8 @@
 			"layer1": {},
 			"layer2": {
 				"path": "",
-				"cont": [{
+				"cont": [
+					{
 						"tag": "none环境",
 						"name": "equation",
 						"descript": null,
@@ -6373,7 +6401,8 @@
 		}
 	},
 	"setting": {
-		"cont": [{
+		"cont": [
+			{
 				"name": "physics",
 				"descript": "<i class='fa fa-cube' style='color: #3399CC ;'></i>Physics扩展"
 			},
@@ -6412,7 +6441,8 @@
 		]
 	},
 	"action": {
-		"cont": [{
+		"cont": [
+			{
 				"tag": "svg",
 				"name": "<i class='fa fa-download'></i>.svg",
 				"descript": ".svg"

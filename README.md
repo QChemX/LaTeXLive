@@ -1,24 +1,44 @@
 <p align="center">
-  <img src="./public/favicon.svg" width="88" height="88" alt="LaTeX Live logo" />
+  <img
+    src="./public/favicon.svg"
+    width="88"
+    height="88"
+    alt="LaTeX Live"
+  />
 </p>
 
 <h1 align="center">LaTeX Live</h1>
 
-<p align="center"><strong>A modern, responsive online LaTeX formula editor with live preview and multi-format export.</strong></p>
+<p align="center">
+  <strong
+    >A modern, responsive online LaTeX formula editor with live preview and
+    multi-format export.</strong
+  >
+</p>
 
 <p align="center">
-  <a href="./README.md">English</a> ·
-  <a href="./README_zh.md">简体中文</a> ·
-  <a href="https://github.com/QChemX/LaTeXLive">GitHub</a>
+    <b>English</b> · <a href="./README_zh.md">简体中文</a>
 </p>
+
+<div align="center">
+
+[![GitHub deployments](https://img.shields.io/github/deployments/QChemX/LaTeXLive/Production)](https://github.com/QChemX/LaTeXLive/deployments)
+[![GitHub last commit](https://img.shields.io/github/last-commit/QChemX/LaTeXLive)](https://github.com/QChemX/LaTeXLive/commits/main/)
+[![GitHub License](https://img.shields.io/github/license/QChemX/LaTeXLive)](https://github.com/QChemX/LaTeXLive/blob/main/LICENSE)
+[![Vercel Deploy](https://deploy-badge.vercel.app/vercel/latexlive)](https://latexlive.vercel.app/)
+
+</div>
 
 ## Overview
 
-LaTeX Live is a browser-based mathematical formula workspace built as a pure React 19 application. It combines real-time MathJax rendering, categorized symbol and formula palettes, image-to-LaTeX integration, responsive editing, and exports for publishing, office documents, web pages, and other typesetting systems.
+LaTeX Live is a browser-based mathematical formula workspace built as a pure React 19 application.
+It combines real-time MathJax rendering, categorized symbol and formula palettes, image-to-LaTeX integration, responsive editing, and exports for publishing, office documents, web pages, and other typesetting systems.
 
-Formula editing and rendering happen locally in the browser. Content is sent to a remote service only when you explicitly use image recognition and configure an OCR endpoint.
+Formula editing and rendering happen locally in the browser.
+Content is sent to a remote service only when you explicitly use image recognition and configure an OCR endpoint.
 
-The application supports desktop and mobile browsers, light and dark themes, installable PWA behavior, and four interface languages. A dedicated `/docs` route provides a practical LaTeX guide in Simplified Chinese and English.
+The application supports desktop and mobile browsers, light and dark themes, installable PWA behavior, and four interface languages.
+A dedicated `/docs` route provides a practical LaTeX guide in Simplified Chinese and English.
 
 ## Key Features
 
@@ -171,57 +191,12 @@ public/
 └── sw.js                      # Service Worker
 ```
 
-The application follows a feature-first structure. API-derived data stays in TanStack Query, while Zustand is limited to interface preferences such as theme, locale, layout, alignment, and zoom.
-
-## Online Deployment
-
-### Vercel dashboard
-
-1. Fork or push this repository to your Git provider.
-2. Import the repository in Vercel.
-3. Select the Vite framework preset.
-4. Use `npm run build` as the build command and `dist` as the output directory.
-5. Add `VITE_OCR_API_URL` only if image recognition is required.
-6. Deploy.
-
-The included [`vercel.json`](./vercel.json) already defines the Vite build and rewrites all application routes to `index.html`, so `/docs` and shared formula URLs work after direct navigation or refresh.
-
-You can also start from the Vercel import flow:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FQChemX%2FLaTeXLive)
-
-### Vercel CLI
-
-```bash
-npx vercel
-npx vercel --prod
-```
-
-### Other static hosts
-
-Run `npm run build`, publish the generated `dist/` directory, and configure the host to fall back unknown routes to `index.html`. HTTPS is required for production Service Worker and installable PWA behavior.
-
-## Browser Data and Privacy
-
-- Formula rendering is local to the browser.
-- UI preferences are stored in local storage under `latexlive-ui`.
-- Share URLs contain the formula in the `formula` query parameter.
-- Images are transmitted only after the user chooses recognition and only to the configured OCR endpoint.
-- No analytics or account system is included by default.
-
-## Contributing
-
-Issues and pull requests are welcome. Before submitting a change, run:
-
-```bash
-npm run lint
-npm run build
-```
-
-Keep new code strictly typed, avoid `any`, preserve the feature-first architecture, and maintain responsive and accessible behavior.
+The application follows a feature-first structure.
+API-derived data stays in TanStack Query, while Zustand is limited to interface preferences such as theme, locale, layout, alignment, and zoom.
 
 ## License
 
-This project is licensed under the [Apache License 2.0](./LICENSE.txt).
+This project is licensed under the [Apache License 2.0](./LICENSE).
 
-LaTeX Live is a React-based rewrite of the original [ubnm/LaTeXLive](https://github.com/ubnm/LaTeXLive). When redistributing derived legacy assets, retain applicable upstream notices and attribution.
+LaTeX Live is a React-based rewrite of the original [ubnm/LaTeXLive](https://github.com/ubnm/LaTeXLive).
+When redistributing derived legacy assets, retain applicable upstream notices and attribution.
