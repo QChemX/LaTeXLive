@@ -9,8 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ImageRecognizer } from "@/features/editor/components/image-recognizer";
+import { LatexOptionTooltip } from "@/features/editor/components/latex-option-tooltip";
 import { MathJaxFormula } from "@/features/editor/components/mathjax-formula";
 import { formulaPreviewLatex } from "@/features/editor/lib/preview-latex";
+import { localizeLabel, paletteOptionLabel } from "@/features/editor/lib/palette-metadata";
 import { type EditorCatalog, type LatexSymbol } from "@/features/editor/types/editor";
 import { cn } from "@/lib/utils";
 import { categoryLabel, useI18n } from "@/lib/i18n";
@@ -48,12 +50,32 @@ function TabButton({ active, icon, label, onClick }: TabButtonProps) {
   );
 }
 
+function quickGridClass(category: string): string {
+  if (category === "matrix") return "grid-cols-[repeat(auto-fill,minmax(7rem,1fr))]";
+  if (["frac", "integral", "sum"].includes(category)) return "grid-cols-[repeat(auto-fill,minmax(5.5rem,1fr))]";
+  return "grid-cols-[repeat(auto-fill,minmax(4.25rem,1fr))]";
+}
+
+function isComplexFormula(latex: string): boolean {
+  const compactLength = latex.replace(/\s/g, "").length;
+  return compactLength > 92 || /\\begin\{|\\cfrac|\\ce\{/.test(latex);
+}
+
+function isVeryComplexFormula(latex: string): boolean {
+  const compactLength = latex.replace(/\s/g, "").length;
+  const rows = (latex.match(/\\\\/g) ?? []).length + 1;
+  return compactLength > 220 || rows >= 4;
+}
+
+function optionOrdinal(symbol: LatexSymbol, fallback: number): number {
+  const ordinal = Number(symbol.tag.split("_").at(-1));
+  return Number.isInteger(ordinal) && ordinal > 0 ? ordinal - 1 : fallback;
+}
+
 export function InputToolbox({ catalog, onInsert, onRecognized }: InputToolboxProps) {
   const { locale, t } = useI18n();
   const [tab, setTab] = useState<InputTab>("toolbar");
   const menu = tab === "image" ? null : catalog.menus.find((item) => item.id === tab);
-  const symbolLabel = (symbol: LatexSymbol): string =>
-    locale.startsWith("zh") ? symbol.zh || symbol.en || symbol.tag : symbol.en || symbol.zh || symbol.tag;
 
   return (
     <section className="overflow-visible rounded-2xl border border-border bg-card shadow-card">
@@ -80,48 +102,92 @@ export function InputToolbox({ catalog, onInsert, onRecognized }: InputToolboxPr
                 <DropdownMenuTrigger asChild>
                   <button
                     type="button"
-                    className="group flex min-w-[4.25rem] flex-1 flex-col items-center justify-center gap-1 rounded-xl border border-transparent px-2 py-2 outline-none transition hover:border-primary/20 hover:bg-primary/7 data-[state=open]:border-primary/25 data-[state=open]:bg-primary/10 sm:min-w-[5.5rem]"
+                    data-palette-category={category.tag}
+                    className="group flex min-h-[6.75rem] min-w-[4.75rem] flex-1 flex-col items-center justify-center rounded-xl border border-transparent px-2 py-2.5 outline-none transition hover:border-primary/20 hover:bg-primary/7 data-[state=open]:border-primary/25 data-[state=open]:bg-primary/10 sm:min-w-[5.75rem]"
                   >
                     <MathJaxFormula
                       latex={category.previewLatex}
                       label={categoryLabel(category.tag, locale, category.description)}
-                      className="h-8 w-12 text-lg sm:h-9"
+                      className="h-11 w-16 shrink-0 overflow-hidden text-lg"
                     />
-                    <span className="max-w-20 truncate text-[11px] text-muted-foreground group-data-[state=open]:text-primary sm:text-xs">
+                    <span className="mt-2 h-5 max-w-24 shrink-0 truncate text-[11px] leading-5 text-muted-foreground group-data-[state=open]:text-primary sm:text-xs">
                       {categoryLabel(category.tag, locale, category.description)}
                     </span>
-                    <ChevronDown className="size-3 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+                    <ChevronDown className="mt-0.5 size-3 shrink-0 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align={index < menu.categories.length / 2 ? "start" : "end"}
-                  className="max-h-[min(32rem,70vh)] w-[min(42rem,calc(100vw-1.5rem))] overflow-y-auto p-3"
+                  className="max-h-[min(38rem,76vh)] w-[min(52rem,calc(100vw-1.5rem))] overflow-y-auto p-3"
                 >
                   <DropdownMenuLabel className="flex items-center justify-between">
                     <span>{categoryLabel(category.tag, locale, category.description)}</span>
                     <code className="font-mono font-normal text-muted-foreground">{groups.reduce((total, group) => total + group.symbols.length, 0)}</code>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {groups.map((group) => (
-                    <div key={group.title} className="py-2">
-                      <div className={cn("grid gap-2", isTemplate ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-[repeat(auto-fill,minmax(2.7rem,1fr))]") }>
-                        {group.symbols.map((symbol, symbolIndex) => (
-                          <DropdownMenuItem
-                            key={`${symbol.tag}-${symbolIndex}`}
-                            onSelect={() => onInsert(symbol)}
-                            title={`${symbolLabel(symbol)}\n${symbol.latex}`}
-                            className={cn(
-                              "rounded-lg border border-border/70 bg-background outline-none transition hover:border-primary/35 hover:bg-primary/7 focus-visible:ring-2 focus-visible:ring-primary/30",
-                              isTemplate ? "min-h-16 p-2" : "grid aspect-square min-h-10 place-items-center p-1.5",
-                            )}
-                          >
-                            <MathJaxFormula
-                              latex={formulaPreviewLatex(symbol.latex)}
-                              label={symbolLabel(symbol)}
-                              className={cn("max-w-full", isTemplate ? "h-12 w-full text-xs" : "size-8 text-sm")}
-                            />
-                          </DropdownMenuItem>
-                        ))}
+                  {groups.map((group, groupIndex) => (
+                    <div key={`${category.tag}-${groupIndex}`} className="py-2">
+                      {group.title ? (
+                        <div className="mb-2 flex items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                          <span>{localizeLabel(group.title, locale)}</span>
+                          <span className="h-px flex-1 bg-border/80" />
+                        </div>
+                      ) : null}
+                      <div className={cn("grid gap-2.5", isTemplate ? "grid-cols-1 sm:grid-cols-2" : quickGridClass(category.tag))}>
+                        {group.symbols.map((symbol, symbolIndex) => {
+                          const complex = isComplexFormula(symbol.latex);
+                          const veryComplex = isVeryComplexFormula(symbol.latex);
+                          const label = paletteOptionLabel(
+                            symbol,
+                            locale,
+                            category.tag,
+                            optionOrdinal(symbol, symbolIndex),
+                            isTemplate,
+                          );
+                          return (
+                            <LatexOptionTooltip key={`${symbol.tag}-${symbolIndex}`} label={label} latex={symbol.latex}>
+                              <DropdownMenuItem
+                                onSelect={() => onInsert(symbol)}
+                                data-palette-option={category.tag}
+                                className={cn(
+                                  "grid place-items-center overflow-hidden rounded-lg border border-border/70 bg-background outline-none transition hover:border-primary/35 hover:bg-primary/7 focus-visible:ring-2 focus-visible:ring-primary/30",
+                                  isTemplate
+                                    ? veryComplex
+                                      ? "min-h-80 p-3 sm:col-span-2"
+                                      : complex
+                                        ? "min-h-48 p-3 sm:col-span-2"
+                                      : "min-h-28 p-3"
+                                    : complex
+                                      ? "min-h-36 p-3 sm:col-span-4"
+                                      : category.tag === "matrix"
+                                        ? "min-h-24 p-2"
+                                        : ["frac", "integral", "sum"].includes(category.tag)
+                                          ? "min-h-20 p-2"
+                                          : "min-h-16 p-2",
+                                )}
+                              >
+                                <MathJaxFormula
+                                  latex={formulaPreviewLatex(symbol.latex)}
+                                  label={label}
+                                  className={cn(
+                                    "w-full max-w-full overflow-hidden",
+                                    isTemplate
+                                      ? veryComplex
+                                        ? "h-72 text-base"
+                                        : complex ? "h-40 text-base" : "h-20 text-base"
+                                      : complex
+                                        ? "h-28 text-base"
+                                        : category.tag === "matrix"
+                                          ? "h-16 text-base"
+                                          : ["frac", "integral", "sum"].includes(category.tag)
+                                            ? "h-14 text-base"
+                                            : "h-11 text-base",
+                                  )}
+                                />
+                              </DropdownMenuItem>
+                            </LatexOptionTooltip>
+                          );
+                        })}
                       </div>
                     </div>
                   ))}

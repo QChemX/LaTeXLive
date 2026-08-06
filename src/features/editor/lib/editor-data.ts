@@ -8,6 +8,11 @@ import {
   type SymbolGroup,
 } from "@/features/editor/types/editor";
 import { menuCategoryPreview } from "@/features/editor/lib/preview-latex";
+import {
+  bilingualGroupLabel,
+  groupTemplateSymbols,
+  sortPaletteSymbols,
+} from "@/features/editor/lib/palette-metadata";
 
 const rawSymbolSchema = z.object({
   tag: z.string(),
@@ -74,12 +79,12 @@ function isCategoryTag(value: string): value is CategoryTag {
 
 function groupSymbols(items: z.infer<typeof rawSymbolSchema>[]): SymbolGroup[] {
   const groups: SymbolGroup[] = [];
-  let current: SymbolGroup = { title: "常用", symbols: [] };
+  let current: SymbolGroup = { symbols: [] };
 
   for (const item of items) {
     if (item.tag === "divider") {
       if (current.symbols.length > 0) groups.push(current);
-      current = { title: item.name_en ?? item.name, symbols: [] };
+      current = { title: bilingualGroupLabel(item.name, item.name_en), symbols: [] };
       continue;
     }
 
@@ -114,7 +119,13 @@ export async function fetchEditorCatalog(): Promise<EditorCatalog> {
   );
 
   const symbols = Object.fromEntries(
-    categoryTags.map((tag) => [tag, groupSymbols(source.layer2.cont[tag]?.cont ?? [])]),
+    categoryTags.map((tag) => [
+      tag,
+      groupSymbols(source.layer2.cont[tag]?.cont ?? []).map((group) => ({
+        ...group,
+        symbols: sortPaletteSymbols(tag, group.symbols),
+      })),
+    ]),
   ) as Record<CategoryTag, SymbolGroup[]>;
 
   const menus = data.shortcut.slice(0, 2).map((menu, index) => ({
@@ -124,9 +135,14 @@ export async function fetchEditorCatalog(): Promise<EditorCatalog> {
       description: item.descript,
       previewLatex: menuCategoryPreview(item.tag),
     })),
-    items: Object.fromEntries(
-      Object.entries(menu.layer2.cont).map(([tag, group]) => [tag, groupSymbols(group.cont)]),
-    ),
+    items: Object.fromEntries(Object.entries(menu.layer2.cont).map(([tag, group]) => {
+      const grouped = groupSymbols(group.cont);
+      if (index === 1) return [tag, groupTemplateSymbols(tag, grouped.flatMap(({ symbols }) => symbols))];
+      return [tag, grouped.map((symbolGroup) => ({
+        ...symbolGroup,
+        symbols: sortPaletteSymbols(tag, symbolGroup.symbols),
+      }))];
+    })),
   }));
 
   if (menus.length !== 2) throw new Error("快捷工具数据不完整");
