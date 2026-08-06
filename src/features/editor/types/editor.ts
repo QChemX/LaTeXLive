@@ -35,7 +35,7 @@ export interface LatexSymbol {
 }
 
 export interface SymbolGroup {
-  title: string;
+  title?: Record<"zh-CN" | "zh-TW" | "en" | "ja", string>;
   symbols: LatexSymbol[];
 }
 

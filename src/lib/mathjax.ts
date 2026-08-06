@@ -13,6 +13,7 @@ import "@mathjax/src/js/input/tex/bbox/BboxConfiguration.js";
 import "@mathjax/src/js/input/tex/boldsymbol/BoldsymbolConfiguration.js";
 import "@mathjax/src/js/input/tex/cancel/CancelConfiguration.js";
 import "@mathjax/src/js/input/tex/color/ColorConfiguration.js";
+import { COLORS } from "@mathjax/src/js/input/tex/color/ColorConstants.js";
 import "@mathjax/src/js/input/tex/enclose/EncloseConfiguration.js";
 import "@mathjax/src/js/input/tex/mhchem/MhchemConfiguration.js";
 import "@mathjax/src/js/input/tex/newcommand/NewcommandConfiguration.js";
@@ -38,6 +39,10 @@ mathjax.asyncLoad = (file: string): Promise<unknown> => {
 };
 
 MathJaxNewcmFont.addExtension(MathJaxMhchemFontExtension);
+
+// MathJax's historical dvips Peach is nearly orange. Use a modern peach tone
+// consistently in live previews, exported SVG, and the source color swatch.
+COLORS.set("Peach", "#FFCBA4");
 
 const adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);

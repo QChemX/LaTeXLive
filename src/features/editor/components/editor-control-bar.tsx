@@ -8,8 +8,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { LatexOptionTooltip } from "@/features/editor/components/latex-option-tooltip";
 import { MathJaxFormula } from "@/features/editor/components/mathjax-formula";
 import { controlPreviewLatex } from "@/features/editor/lib/preview-latex";
+import {
+  colorPreviewValues,
+  controlOptionLabel,
+  environmentOptions,
+  localizeLabel,
+} from "@/features/editor/lib/palette-metadata";
 import { type LatexSymbol } from "@/features/editor/types/editor";
 import { type LatexEnvironment } from "@/features/editor/lib/insert-latex";
 import { cn } from "@/lib/utils";
@@ -30,19 +37,6 @@ const controlIcons = { color: Palette, fontfamily: Type, fontsize: TextCursorInp
 export function EditorControlBar({ controls, onInsert, onEnvironment, onClear, clearDisabled }: EditorControlBarProps) {
   const { locale, t } = useI18n();
   const labels: Record<ControlTag, string> = { color: t("color"), fontfamily: t("font"), fontsize: t("size") };
-  const environments: Array<{ value: LatexEnvironment; label: string }> = [
-    { value: "none", label: "none" },
-    { value: "eqnarray", label: "eqnarray" },
-    { value: "align", label: "align" },
-    { value: "array", label: "array" },
-    { value: "aligned", label: "aligned" },
-    { value: "gathered", label: "gathered" },
-    { value: "cases", label: "cases" },
-    { value: "split", label: "split" },
-  ];
-
-  const symbolLabel = (symbol: LatexSymbol): string =>
-    locale.startsWith("zh") ? symbol.zh || symbol.en || symbol.tag : symbol.en || symbol.zh || symbol.tag;
 
   return (
     <div className="flex items-center gap-1 overflow-x-auto border-b border-border bg-muted/20 px-3 py-2.5 scrollbar-none">
@@ -58,29 +52,33 @@ export function EditorControlBar({ controls, onInsert, onEnvironment, onClear, c
               <DropdownMenuContent align="start" className="w-72 p-2.5">
                 <DropdownMenuLabel>{labels[tag]}</DropdownMenuLabel>
                 <div className={cn("grid gap-2", tag === "color" ? "grid-cols-4" : "grid-cols-3")}>
-                  {controls[tag].map((symbol) => (
-                    <DropdownMenuItem
-                      key={symbol.tag}
-                      onSelect={() => onInsert(symbol)}
-                      title={symbolLabel(symbol)}
-                      className="grid min-h-11 place-items-center rounded-lg border border-border bg-background p-1.5 hover:border-primary/35 hover:bg-primary/7"
-                    >
-                      {tag === "color" ? (
-                        <span
-                          role="img"
-                          aria-label={symbolLabel(symbol)}
-                          className="size-7 rounded-full border border-black/15 shadow-sm ring-2 ring-white/80 dark:ring-black/20"
-                          style={{ backgroundColor: symbol.tag }}
-                        />
-                      ) : (
-                        <MathJaxFormula
-                          latex={controlPreviewLatex(tag, symbol.latex)}
-                          label={symbolLabel(symbol)}
-                          className="h-8 w-full text-sm"
-                        />
-                      )}
-                    </DropdownMenuItem>
-                  ))}
+                  {controls[tag].map((symbol) => {
+                    const optionLabel = controlOptionLabel(symbol, locale);
+                    return (
+                      <LatexOptionTooltip key={symbol.tag} label={optionLabel} latex={symbol.latex}>
+                        <DropdownMenuItem
+                          onSelect={() => onInsert(symbol)}
+                          data-control-option={tag}
+                          className="grid min-h-12 place-items-center overflow-hidden rounded-lg border border-border bg-background p-1.5 hover:border-primary/35 hover:bg-primary/7"
+                        >
+                          {tag === "color" ? (
+                            <span
+                              role="img"
+                              aria-label={optionLabel}
+                              className="size-7 rounded-full border border-black/20 shadow-sm ring-2 ring-white/80 dark:ring-black/20"
+                              style={{ backgroundColor: colorPreviewValues[symbol.tag] ?? "transparent" }}
+                            />
+                          ) : (
+                            <MathJaxFormula
+                              latex={controlPreviewLatex(tag, symbol.latex)}
+                              label={optionLabel}
+                              className="h-9 w-full overflow-hidden text-sm"
+                            />
+                          )}
+                        </DropdownMenuItem>
+                      </LatexOptionTooltip>
+                    );
+                  })}
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -95,10 +93,12 @@ export function EditorControlBar({ controls, onInsert, onEnvironment, onClear, c
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-48">
           <DropdownMenuLabel>{t("environment")}</DropdownMenuLabel>
-          {environments.map(({ value, label }) => (
-            <DropdownMenuItem key={value} onSelect={() => onEnvironment(value)} className="font-mono text-xs">
-              {label}
-            </DropdownMenuItem>
+          {environmentOptions.map(({ value, label, latex }) => (
+            <LatexOptionTooltip key={value} label={localizeLabel(label, locale)} latex={latex}>
+              <DropdownMenuItem onSelect={() => onEnvironment(value)} className="font-mono text-xs">
+                {value}
+              </DropdownMenuItem>
+            </LatexOptionTooltip>
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
