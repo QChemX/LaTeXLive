@@ -75,6 +75,9 @@ interface BalancedTemplateLayout {
 }
 
 function balancedTemplateLayout(category: string, symbols: LatexSymbol[]): BalancedTemplateLayout | null {
+  const twoColumnGrid = "grid-cols-1 sm:grid-cols-2";
+  const fillsOddRow = symbols.length % 2 === 1;
+
   if (category === "physics") {
     const hasMultiLineFormula = symbols.some((symbol) => (symbol.latex.match(/\\\\/g) ?? []).length >= 3);
     return {
@@ -88,10 +91,63 @@ function balancedTemplateLayout(category: string, symbols: LatexSymbol[]): Balan
   if (["statistics", "sequence"].includes(category)) {
     const hasComplexFormula = symbols.some((symbol) => isComplexFormula(symbol.latex));
     return {
-      gridClass: "grid-cols-1 sm:grid-cols-2",
+      gridClass: twoColumnGrid,
       itemClass: hasComplexFormula ? "min-h-48 p-3" : "min-h-28 p-3",
       formulaClass: hasComplexFormula ? "h-40 text-base" : "h-20 text-base",
-      fillOddRow: symbols.length % 2 === 1,
+      fillOddRow: fillsOddRow,
+    };
+  }
+
+  if (category === "algebra") {
+    const hasLongFormula = symbols.some((symbol) => isVeryComplexFormula(symbol.latex));
+    return {
+      gridClass: hasLongFormula ? "grid-cols-1" : twoColumnGrid,
+      itemClass: hasLongFormula ? "min-h-56 p-3" : "min-h-32 p-3",
+      formulaClass: hasLongFormula ? "h-48 text-base" : "h-24 text-base",
+      fillOddRow: !hasLongFormula && fillsOddRow,
+    };
+  }
+
+  if (["geometry", "calculous", "trigonometry"].includes(category)) {
+    return {
+      gridClass: twoColumnGrid,
+      itemClass: "min-h-32 p-3",
+      formulaClass: "h-24 text-base",
+      fillOddRow: fillsOddRow,
+    };
+  }
+
+  if (category === "inequality") {
+    const hasVeryComplexFormula = symbols.some((symbol) => isVeryComplexFormula(symbol.latex));
+    const hasComplexFormula = symbols.some((symbol) => isComplexFormula(symbol.latex));
+    return {
+      gridClass: hasVeryComplexFormula ? "grid-cols-1" : twoColumnGrid,
+      itemClass: hasVeryComplexFormula
+        ? "min-h-80 p-3"
+        : hasComplexFormula ? "min-h-48 p-3" : "min-h-32 p-3",
+      formulaClass: hasVeryComplexFormula
+        ? "h-72 text-base"
+        : hasComplexFormula ? "h-40 text-base" : "h-24 text-base",
+      fillOddRow: !hasVeryComplexFormula && fillsOddRow,
+    };
+  }
+
+  if (category === "array") {
+    const hasLargeMatrix = symbols.some((symbol) => isVeryComplexFormula(symbol.latex));
+    return {
+      gridClass: twoColumnGrid,
+      itemClass: hasLargeMatrix ? "min-h-56 p-3" : "min-h-40 p-3",
+      formulaClass: hasLargeMatrix ? "h-48 text-base" : "h-32 text-base",
+      fillOddRow: fillsOddRow,
+    };
+  }
+
+  if (category === "chemistry") {
+    return {
+      gridClass: "grid-cols-1",
+      itemClass: "min-h-32 p-3",
+      formulaClass: "h-24 text-base",
+      fillOddRow: false,
     };
   }
 
