@@ -4605,7 +4605,7 @@
 							{
 								"tag": "algebra_6",
 								"name": "algebra_6.png",
-								"latex": "\\frac{1}{\\sqrt{a}}=\\frac{\\sqrt{a}}{a},a\\ge 0\\frac{1}{\\sqrt{a}}=\\frac{\\sqrt{a}}{a},a\\ge 0 ",
+								"latex": "\\frac{1}{\\sqrt{a}}=\\frac{\\sqrt{a}}{a},a\\ge 0 ",
 								"cursor": 0,
 								"standby": "",
 								"padding": "",
@@ -4765,7 +4765,7 @@
 							{
 								"tag": "geometry_7",
 								"name": "geometry_7.png",
-								"latex": "\\left.\\begin{matrix} \r\n  a \\subset \\beta ,b \\subset \\beta ,a \\cap b=P \\\\  \r\n  a \\parallel \\partial ,b \\parallel \\partial  \r\n\\end{matrix}\\right\\}\\Rightarrow \\beta \\parallel \\alpha ",
+								"latex": "\\left.\\begin{matrix} \r\n  a \\subset \\beta ,b \\subset \\beta ,a \\cap b=P \\\\  \r\n  a \\parallel \\alpha ,b \\parallel \\alpha  \r\n\\end{matrix}\\right\\}\\Rightarrow \\beta \\parallel \\alpha ",
 								"cursor": 0,
 								"standby": "",
 								"padding": "",
@@ -4848,7 +4848,7 @@
 							{
 								"tag": "inequality_3",
 								"name": "inequality_3.png",
-								"latex": "a > b > 0,c > d > 0 \\Rightarrow ac bd ",
+								"latex": "a > b > 0,c > d > 0 \\Rightarrow ac > bd ",
 								"cursor": 0,
 								"standby": "",
 								"padding": "",

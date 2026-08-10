@@ -73,7 +73,8 @@ const templateGroupSpecs: Record<string, TemplateGroupSpec[]> = {
   inequality: [
     { title: labels("序关系", "序關係", "Order relations", "順序関係"), tags: range("inequality", 1, 4) },
     { title: labels("绝对值", "絕對值", "Absolute values", "絶対値"), tags: range("inequality", 5, 8) },
-    { title: labels("经典不等式", "經典不等式", "Classical inequalities", "古典不等式"), tags: range("inequality", 9, 13) },
+    { title: labels("经典不等式", "經典不等式", "Classical inequalities", "古典不等式"), tags: range("inequality", 9, 12) },
+    { title: labels("平均数关系", "平均數關係", "Means", "平均の関係"), tags: ["inequality_13"] },
   ],
   calculous: [
     { title: labels("导数", "導數", "Derivatives", "微分"), tags: [...range("calculous", 1, 5), "calculous_7", "calculous_8"] },
