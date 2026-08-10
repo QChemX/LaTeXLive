@@ -14,6 +14,7 @@ import "@mathjax/src/js/input/tex/boldsymbol/BoldsymbolConfiguration.js";
 import "@mathjax/src/js/input/tex/cancel/CancelConfiguration.js";
 import "@mathjax/src/js/input/tex/color/ColorConfiguration.js";
 import { COLORS } from "@mathjax/src/js/input/tex/color/ColorConstants.js";
+import "@mathjax/src/js/input/tex/configmacros/ConfigMacrosConfiguration.js";
 import "@mathjax/src/js/input/tex/enclose/EncloseConfiguration.js";
 import "@mathjax/src/js/input/tex/mhchem/MhchemConfiguration.js";
 import "@mathjax/src/js/input/tex/newcommand/NewcommandConfiguration.js";
@@ -55,6 +56,7 @@ const packages = [
   "boldsymbol",
   "cancel",
   "color",
+  "configmacros",
   "enclose",
   "mhchem",
   "newcommand",
@@ -64,7 +66,16 @@ const packages = [
   "unicode",
 ];
 
-const tex = new TeX({ packages, processEscapes: true, tags: "ams" });
+const tex = new TeX({
+  packages,
+  processEscapes: true,
+  tags: "ams",
+  macros: {
+    // The Physics package assigns \div to divergence. Restore the standard
+    // division sign while keeping \divergence available for vector calculus.
+    div: "\\divsymbol",
+  },
+});
 const svg = new SVG({
   fontCache: "local",
   fontData: MathJaxNewcmFont,

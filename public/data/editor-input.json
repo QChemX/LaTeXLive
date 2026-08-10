@@ -940,7 +940,7 @@
 							{
 								"tag": "slash",
 								"name": "symbol_78_relation_slash.svg",
-								"latex": ": ",
+								"latex": "/ ",
 								"cursor": 0,
 								"standby": "",
 								"padding": "",
@@ -3566,7 +3566,7 @@
 							{
 								"tag": "arccsc",
 								"name": "trig_18_arccsc.svg",
-								"latex": "\\operatorname{arccos} ",
+								"latex": "\\operatorname{arccsc} ",
 								"cursor": 0,
 								"standby": "",
 								"padding": "0.4rem 0.2rem 0 0.2rem",

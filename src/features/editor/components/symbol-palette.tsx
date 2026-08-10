@@ -67,6 +67,37 @@ function isVeryComplexFormula(latex: string): boolean {
   return compactLength > 220 || rows >= 4;
 }
 
+interface BalancedTemplateLayout {
+  gridClass: string;
+  itemClass: string;
+  formulaClass: string;
+  fillOddRow: boolean;
+}
+
+function balancedTemplateLayout(category: string, symbols: LatexSymbol[]): BalancedTemplateLayout | null {
+  if (category === "physics") {
+    const hasMultiLineFormula = symbols.some((symbol) => (symbol.latex.match(/\\\\/g) ?? []).length >= 3);
+    return {
+      gridClass: "grid-cols-1",
+      itemClass: hasMultiLineFormula ? "min-h-80 p-3" : "min-h-32 p-3",
+      formulaClass: hasMultiLineFormula ? "h-72 text-base" : "h-24 text-base",
+      fillOddRow: false,
+    };
+  }
+
+  if (["statistics", "sequence"].includes(category)) {
+    const hasComplexFormula = symbols.some((symbol) => isComplexFormula(symbol.latex));
+    return {
+      gridClass: "grid-cols-1 sm:grid-cols-2",
+      itemClass: hasComplexFormula ? "min-h-48 p-3" : "min-h-28 p-3",
+      formulaClass: hasComplexFormula ? "h-40 text-base" : "h-20 text-base",
+      fillOddRow: symbols.length % 2 === 1,
+    };
+  }
+
+  return null;
+}
+
 function optionOrdinal(symbol: LatexSymbol, fallback: number): number {
   const ordinal = Number(symbol.tag.split("_").at(-1));
   return Number.isInteger(ordinal) && ordinal > 0 ? ordinal - 1 : fallback;
@@ -125,72 +156,84 @@ export function InputToolbox({ catalog, onInsert, onRecognized }: InputToolboxPr
                     <code className="font-mono font-normal text-muted-foreground">{groups.reduce((total, group) => total + group.symbols.length, 0)}</code>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {groups.map((group, groupIndex) => (
-                    <div key={`${category.tag}-${groupIndex}`} className="py-2">
-                      {group.title ? (
-                        <div className="mb-2 flex items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                          <span>{localizeLabel(group.title, locale)}</span>
-                          <span className="h-px flex-1 bg-border/80" />
-                        </div>
-                      ) : null}
-                      <div className={cn("grid gap-2.5", isTemplate ? "grid-cols-1 sm:grid-cols-2" : quickGridClass(category.tag))}>
-                        {group.symbols.map((symbol, symbolIndex) => {
-                          const complex = isComplexFormula(symbol.latex);
-                          const veryComplex = isVeryComplexFormula(symbol.latex);
-                          const label = paletteOptionLabel(
-                            symbol,
-                            locale,
-                            category.tag,
-                            optionOrdinal(symbol, symbolIndex),
-                            isTemplate,
-                          );
-                          return (
-                            <LatexOptionTooltip key={`${symbol.tag}-${symbolIndex}`} label={label} latex={symbol.latex}>
-                              <DropdownMenuItem
-                                onSelect={() => onInsert(symbol)}
-                                data-palette-option={category.tag}
-                                className={cn(
-                                  "grid place-items-center overflow-hidden rounded-lg border border-border/70 bg-background outline-none transition hover:border-primary/35 hover:bg-primary/7 focus-visible:ring-2 focus-visible:ring-primary/30",
-                                  isTemplate
-                                    ? veryComplex
-                                      ? "min-h-80 p-3 sm:col-span-2"
-                                      : complex
-                                        ? "min-h-48 p-3 sm:col-span-2"
-                                      : "min-h-28 p-3"
-                                    : complex
-                                      ? "min-h-36 p-3 sm:col-span-4"
-                                      : category.tag === "matrix"
-                                        ? "min-h-24 p-2"
-                                        : ["frac", "integral", "sum"].includes(category.tag)
-                                          ? "min-h-20 p-2"
-                                          : "min-h-16 p-2",
-                                )}
-                              >
-                                <MathJaxFormula
-                                  latex={formulaPreviewLatex(symbol.latex)}
-                                  label={label}
+                  {groups.map((group, groupIndex) => {
+                    const balancedLayout = isTemplate ? balancedTemplateLayout(category.tag, group.symbols) : null;
+                    return (
+                      <div key={`${category.tag}-${groupIndex}`} className="py-2">
+                        {group.title ? (
+                          <div className="mb-2 flex items-center gap-2 px-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                            <span>{localizeLabel(group.title, locale)}</span>
+                            <span className="h-px flex-1 bg-border/80" />
+                          </div>
+                        ) : null}
+                        <div className={cn(
+                          "grid gap-2.5",
+                          isTemplate ? balancedLayout?.gridClass ?? "grid-cols-1 sm:grid-cols-2" : quickGridClass(category.tag),
+                        )}>
+                          {group.symbols.map((symbol, symbolIndex) => {
+                            const complex = isComplexFormula(symbol.latex);
+                            const veryComplex = isVeryComplexFormula(symbol.latex);
+                            const fillsOddRow = Boolean(
+                              balancedLayout?.fillOddRow && symbolIndex === group.symbols.length - 1,
+                            );
+                            const label = paletteOptionLabel(
+                              symbol,
+                              locale,
+                              category.tag,
+                              optionOrdinal(symbol, symbolIndex),
+                              isTemplate,
+                            );
+                            return (
+                              <LatexOptionTooltip key={`${symbol.tag}-${symbolIndex}`} label={label} latex={symbol.latex}>
+                                <DropdownMenuItem
+                                  onSelect={() => onInsert(symbol)}
+                                  data-palette-option={category.tag}
                                   className={cn(
-                                    "w-full max-w-full overflow-hidden",
+                                    "grid place-items-center overflow-hidden rounded-lg border border-border/70 bg-background outline-none transition hover:border-primary/35 hover:bg-primary/7 focus-visible:ring-2 focus-visible:ring-primary/30",
                                     isTemplate
-                                      ? veryComplex
-                                        ? "h-72 text-base"
-                                        : complex ? "h-40 text-base" : "h-20 text-base"
+                                      ? balancedLayout
+                                        ? cn(balancedLayout.itemClass, fillsOddRow && "sm:col-span-2")
+                                        : veryComplex
+                                          ? "min-h-80 p-3 sm:col-span-2"
+                                          : complex
+                                            ? "min-h-48 p-3 sm:col-span-2"
+                                            : "min-h-28 p-3"
                                       : complex
-                                        ? "h-28 text-base"
+                                        ? "min-h-36 p-3 sm:col-span-4"
                                         : category.tag === "matrix"
-                                          ? "h-16 text-base"
+                                          ? "min-h-24 p-2"
                                           : ["frac", "integral", "sum"].includes(category.tag)
-                                            ? "h-14 text-base"
-                                            : "h-11 text-base",
+                                            ? "min-h-20 p-2"
+                                            : "min-h-16 p-2",
                                   )}
-                                />
-                              </DropdownMenuItem>
-                            </LatexOptionTooltip>
-                          );
-                        })}
+                                >
+                                  <MathJaxFormula
+                                    latex={formulaPreviewLatex(symbol.latex)}
+                                    label={label}
+                                    className={cn(
+                                      "w-full max-w-full overflow-hidden",
+                                      isTemplate
+                                        ? balancedLayout?.formulaClass
+                                          ?? (veryComplex
+                                            ? "h-72 text-base"
+                                            : complex ? "h-40 text-base" : "h-20 text-base")
+                                        : complex
+                                          ? "h-28 text-base"
+                                          : category.tag === "matrix"
+                                            ? "h-16 text-base"
+                                            : ["frac", "integral", "sum"].includes(category.tag)
+                                              ? "h-14 text-base"
+                                              : "h-11 text-base",
+                                    )}
+                                  />
+                                </DropdownMenuItem>
+                              </LatexOptionTooltip>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </DropdownMenuContent>
               </DropdownMenu>
             );
